@@ -1,8 +1,13 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.
+import lombok.*;
 @Entity
+@Data
+@AllArgsController
+@NoArgsController
+@Getter
+@Setter
 @Table(name = "employees")
 public class Employee {
 
@@ -12,7 +17,7 @@ public class Employee {
 
     private String fullName;
 
-    @Column(unique = true, nullable = false)
+   
     private String email;
 
     private String department;
