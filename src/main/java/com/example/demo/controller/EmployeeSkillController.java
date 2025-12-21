@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/employee-skills")
-@Tag(name = "Employee Skill Controller")
 public class EmployeeSkillController {
 
     @PostMapping

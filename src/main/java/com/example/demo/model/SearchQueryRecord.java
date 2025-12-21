@@ -26,5 +26,4 @@ searchedAt = new Timestamp(System.currentTimeMillis());
 }
 
 
-// getters and setters
 }

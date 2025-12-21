@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/search")
-@Tag(name = "Search Query Controller")
 public class SearchQueryController {
 
     @PostMapping("/employees")

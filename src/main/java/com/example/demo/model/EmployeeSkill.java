@@ -26,5 +26,4 @@ private Integer yearsOfExperience;
 private Boolean active = true;
 
 
-// getters and setters
 }
