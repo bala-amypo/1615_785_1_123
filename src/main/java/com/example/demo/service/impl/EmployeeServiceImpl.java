@@ -23,7 +23,7 @@ public class EmployeeServiceImpl {
 
     // -------- Constructors --------
 
-    public EmployeeS() {
+    public EmployeeServiceImpl() {
     }
 
     // -------- Getters & Setters --------
