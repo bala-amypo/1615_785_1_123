@@ -18,11 +18,3 @@ public interface EmployeeService {
 }
 
 
-
-public interface EmployeeService {
-Employee createEmployee(Employee e);
-Employee updateEmployee(Long id, Employee e);
-Employee getEmployeeById(Long id);
-List<Employee> getAllEmployees();
-void deactivateEmployee(Long id);
-}
