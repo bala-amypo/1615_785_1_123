@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class EmployeeServiceImpl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Employee {
 
     // -------- Constructors --------
 
-    public Employee() {
+    public EmployeeS() {
     }
 
     // -------- Getters & Setters --------
