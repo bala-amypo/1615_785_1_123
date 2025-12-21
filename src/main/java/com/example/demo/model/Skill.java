@@ -22,5 +22,4 @@ private String description;
 private Boolean active = true;
 
 
-// getters and setters
 }
