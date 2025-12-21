@@ -7,7 +7,7 @@ import com.example.demo.service.EmployeeService;
 import com.example.demo.exception.ResourceNotFoundException;
 import java.util.List;
 
-@Service   // ✅ REQUIRED
+@Service   
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repo;
