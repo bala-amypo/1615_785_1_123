@@ -1,45 +1,76 @@
 package com.example.demo.model;
 
-
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-
 
 @Entity
+@Table(name = "employees")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    private String fullName;
 
+    @Column(unique = true, nullable = false)
+    private String email;
 
-private String fullName;
+    private String department;
 
+    private String jobTitle;
 
-@Column(unique = true)
-private String email;
+    private boolean active = true;
 
+    // -------- Constructors --------
+    public Employee() {
+    }
 
-private String department;
-private String jobTitle;
-private Boolean active = true;
+    // -------- Getters & Setters --------
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-private Timestamp createdAt;
-private Timestamp updatedAt;
+    public String getFullName() {
+        return fullName;
+    }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-@PrePersist
-public void onCreate() {
-createdAt = new Timestamp(System.currentTimeMillis());
-}
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-@PreUpdate
-public void onUpdate() {
-updatedAt = new Timestamp(System.currentTimeMillis());
-}
+    public String getDepartment() {
+        return department;
+    }
 
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
