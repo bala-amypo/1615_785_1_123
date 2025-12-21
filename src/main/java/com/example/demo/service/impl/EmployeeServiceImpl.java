@@ -1,54 +1,78 @@
-package com.example.demo.service.impl;
+package com.example.demo.model;
 
+import jakarta.persistence.*;
 
-import org.springframework.stereotype.Service;
-import com.example.demo.repository.EmployeeRepository;
-import com.example.demo.model.Employee;
-import com.example.demo.service.EmployeeService;
-import com.example.demo.exception.ResourceNotFoundException;
-import java.util.List;
+@Entity
+@Table(name = "employees")
+public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Service
-public class EmployeeServiceImpl implements EmployeeService {
+    private String fullName;
 
+    @Column(unique = true, nullable = false)
+    private String email;
 
-private final EmployeeRepository repo;
+    private String department;
 
+    private String jobTitle;
 
-public EmployeeServiceImpl(EmployeeRepository repo) {
-this.repo = repo;
-}
+    private boolean active = true;
 
+    // -------- Constructors --------
 
-public Employee createEmployee(Employee e) {
-repo.findByEmail(e.getEmail()).ifPresent(x -> { throw new IllegalArgumentException("duplicate email"); });
-return repo.save(e);
-}
+    public Employee() {
+    }
 
+    // -------- Getters & Setters --------
 
-public Employee updateEmployee(Long id, Employee e) {
-Employee emp = getEmployeeById(id);
-emp.setFullName(e.getFullName());
-emp.setDepartment(e.getDepartment());
-emp.setJobTitle(e.getJobTitle());
-return repo.save(emp);
-}
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-public Employee getEmployeeById(Long id) {
-return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
-}
+    public String getFullName() {
+        return fullName;
+    }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-public List<Employee> getAllEmployees() {
-return repo.findAll();
-}
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-public void deactivateEmployee(Long id) {
-Employee emp = getEmployeeById(id);
-emp.setActive(false);
-repo.save(emp);
-}
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
