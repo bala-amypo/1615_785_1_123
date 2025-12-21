@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 @Entity
 @Data
-@AllArgsController
-@NoArgsController
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "employees")
