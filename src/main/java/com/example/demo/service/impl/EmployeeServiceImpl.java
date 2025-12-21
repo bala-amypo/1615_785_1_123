@@ -1,78 +1,55 @@
-package com.example.demo.model;
+package com.example.demo.service.impl;
 
-import jakarta.persistence.*;
+import org.springframework.stereotype.Service;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.model.Employee;
+import com.example.demo.service.EmployeeService;
+import com.example.demo.exception.ResourceNotFoundException;
+import java.util.List;
 
-@Entity
-@Table(name = "employees")
-public class EmployeeServiceImpl {
+@Service   // ✅ REQUIRED
+public class EmployeeServiceImpl implements EmployeeService {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final EmployeeRepository repo;
 
-    private String fullName;
-
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    private String department;
-
-    private String jobTitle;
-
-    private boolean active = true;
-
-    // -------- Constructors --------
-
-    public EmployeeServiceImpl() {
+    public EmployeeServiceImpl(EmployeeRepository repo) {
+        this.repo = repo;
     }
 
-    // -------- Getters & Setters --------
-
-    public Long getId() {
-        return id;
+    @Override
+    public Employee createEmployee(Employee e) {
+        repo.findByEmail(e.getEmail())
+            .ifPresent(x -> {
+                throw new IllegalArgumentException("duplicate email");
+            });
+        return repo.save(e);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public Employee updateEmployee(Long id, Employee e) {
+        Employee emp = getEmployeeById(id);
+        emp.setFullName(e.getFullName());
+        emp.setDepartment(e.getDepartment());
+        emp.setJobTitle(e.getJobTitle());
+        return repo.save(emp);
     }
 
-    public String getFullName() {
-        return fullName;
+    @Override
+    public Employee getEmployeeById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Employee not found"));
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Override
+    public List<Employee> getAllEmployees() {
+        return repo.findAll();
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
+    @Override
+    public void deactivateEmployee(Long id) {
+        Employee emp = getEmployeeById(id);
+        emp.setActive(false);
+        repo.save(emp);
     }
 }
