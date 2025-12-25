@@ -1,31 +1,35 @@
 package com.example.demo.model;
 
-
 import jakarta.persistence.*;
-import lombok.*;
-
 
 @Entity
-@Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Skill {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    private String name;
 
+    private boolean active = true;
 
-@Column(unique = true)
-private String name;
+    public Long getId() {
+        return id;
+    }
 
+    public String getName() {
+        return name;
+    }
 
-private String category;
-private String description;
-private Boolean active = true;
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public boolean isActive() {
+        return active;
+    }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

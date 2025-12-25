@@ -1,39 +1,41 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-public class Skill {
+public class SearchQueryRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private boolean active = true;
+    private String query;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private LocalDateTime searchedAt;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public SearchQueryRecord() {
+        this.searchedAt = LocalDateTime.now();
+    }
 
-    public boolean getActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
-    public Object getSkillName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSkillName'");
+    public SearchQueryRecord(String query) {
+        this.query = query;
+        this.searchedAt = LocalDateTime.now();
     }
-    public void setSkillName(Object skillName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSkillName'");
+
+    public Long getId() {
+        return id;
     }
-    public Object getDescription() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDescription'");
+
+    public String getQuery() {
+        return query;
     }
-    public void setDescription(Object description) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDescription'");
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
+    public LocalDateTime getSearchedAt() {
+        return searchedAt;
     }
 }

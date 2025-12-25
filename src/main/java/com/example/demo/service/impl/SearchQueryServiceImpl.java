@@ -1,38 +1,30 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.SearchQueryRecord;
-import com.example.demo.repository.SearchQueryRecordRepository;
-import com.example.demo.repository.EmployeeSkillRepository;
-import com.example.demo.service.SearchQueryService;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+import com.example.demo.model.SearchQueryRecord;
+import com.example.demo.repository.SearchQueryRecordRepository;
+import com.example.demo.service.SearchQueryService;
 
 @Service
 public class SearchQueryServiceImpl implements SearchQueryService {
 
-    private final SearchQueryRecordRepository queryRepo;
-    private final EmployeeSkillRepository skillRepo;
+    private final SearchQueryRecordRepository repository;
 
-    public SearchQueryServiceImpl(SearchQueryRecordRepository q, EmployeeSkillRepository s) {
-        this.queryRepo = q;
-        this.skillRepo = s;
+    public SearchQueryServiceImpl(SearchQueryRecordRepository repository) {
+        this.repository = repository;
     }
 
-    public void saveQuery(SearchQueryRecord record) {
-        queryRepo.save(record);
+    @Override
+    public SearchQueryRecord saveQuery(String query) {
+        SearchQueryRecord record = new SearchQueryRecord(query);
+        return repository.save(record);
     }
 
-    public SearchQueryRecord getQueryById(Long id) {
-        return queryRepo.findById(id).orElse(null);
-    }
-
-    public List<SearchQueryRecord> getQueriesForUser(Long userId) {
-        return Collections.emptyList();
-    }
-
-    public List<String> searchEmployeesBySkills(List<String> skills, Long userId) {
-        return Collections.emptyList();
+    @Override
+    public List<SearchQueryRecord> getAllQueries() {
+        return repository.findAll();
     }
 }
