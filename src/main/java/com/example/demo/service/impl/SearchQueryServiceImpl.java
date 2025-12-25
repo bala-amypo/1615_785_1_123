@@ -7,24 +7,32 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.SearchQueryRecord;
 import com.example.demo.repository.SearchQueryRecordRepository;
 import com.example.demo.service.SearchQueryService;
-
 @Service
 public class SearchQueryServiceImpl implements SearchQueryService {
 
-    private final SearchQueryRecordRepository repository;
+    private final SearchQueryRecordRepository recordRepo;
+    private final EmployeeSkillRepository employeeSkillRepo;
 
-    public SearchQueryServiceImpl(SearchQueryRecordRepository repository) {
-        this.repository = repository;
+    public SearchQueryServiceImpl(
+        SearchQueryRecordRepository recordRepo,
+        EmployeeSkillRepository employeeSkillRepo
+    ) {
+        this.recordRepo = recordRepo;
+        this.employeeSkillRepo = employeeSkillRepo;
     }
 
     @Override
-    public SearchQueryRecord saveQuery(String query) {
-        SearchQueryRecord record = new SearchQueryRecord(query);
-        return repository.save(record);
+    public List<Employee> searchEmployeesBySkills(List<String> skills, long searcherId) {
+        return employeeSkillRepo.findEmployeesByAllSkillNames(skills, searcherId);
     }
 
     @Override
-    public List<SearchQueryRecord> getAllQueries() {
-        return repository.findAll();
+    public SearchQueryRecord getQueryById(long id) {
+        return recordRepo.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<SearchQueryRecord> getQueriesForUser(long searcherId) {
+        return recordRepo.findBySearcherId(searcherId);
     }
 }
