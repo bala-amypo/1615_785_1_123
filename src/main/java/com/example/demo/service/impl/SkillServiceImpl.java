@@ -2,7 +2,12 @@ package com.example.demo.service.impl;
 
 import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
-
 @Service
 public class SkillServiceImpl implements SkillService {
+
+    private final SkillRepository skillRepository;
+
+    public SkillServiceImpl(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
 }
