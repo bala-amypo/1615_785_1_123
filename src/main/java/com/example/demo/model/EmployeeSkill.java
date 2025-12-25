@@ -1,10 +1,22 @@
 package com.example.demo.model;
 
 
+import com.example.demo.repository.EmployeeSkillRepository;
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class EmployeeSkill {
 
 
@@ -14,7 +26,7 @@ private Long id;
 
 
 @ManyToOne
-private Employee employee;
+private EmployeeSkillRepository employee;
 
 
 @ManyToOne

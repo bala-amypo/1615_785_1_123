@@ -6,6 +6,8 @@ import com.example.demo.model.Employee;
 import java.util.Optional;
 
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<EmployeeSkillRepository, Long> {
 Optional<Employee> findByEmail(String email);
+
+Employee save(Employee e);
 }
