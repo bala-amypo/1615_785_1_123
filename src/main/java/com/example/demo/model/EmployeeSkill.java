@@ -1,28 +1,39 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class EmployeeSkill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private Employee employee;
+
+    @ManyToOne
+    private Skill skill;
+
     private int proficiency;
 
     private boolean active;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    // ✅ REQUIRED GETTERS & SETTERS
 
-    @ManyToOne
-    @JoinColumn(name = "skill_id")
-    private Skill skill;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public void setProficiency(int proficiency) {
+        this.proficiency = proficiency;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

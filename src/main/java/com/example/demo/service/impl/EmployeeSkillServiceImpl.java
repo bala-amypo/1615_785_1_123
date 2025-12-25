@@ -22,17 +22,22 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     public EmployeeSkillServiceImpl(
             EmployeeSkillRepository employeeSkillRepo,
             EmployeeRepository employeeRepo,
-            SkillRepository skillRepo) {
+            SkillRepository skillRepo
+    ) {
         this.employeeSkillRepo = employeeSkillRepo;
         this.employeeRepo = employeeRepo;
         this.skillRepo = skillRepo;
     }
 
+    // ✅ ADD SKILL TO EMPLOYEE
     @Override
     public EmployeeSkill addSkillToEmployee(long employeeId, long skillId, int proficiency) {
 
-        Employee employee = employeeRepo.findById(employeeId).orElseThrow();
-        Skill skill = skillRepo.findById(skillId).orElseThrow();
+        Employee employee = employeeRepo.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        Skill skill = skillRepo.findById(skillId)
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
 
         EmployeeSkill employeeSkill = new EmployeeSkill();
         employeeSkill.setEmployee(employee);
@@ -43,15 +48,19 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         return employeeSkillRepo.save(employeeSkill);
     }
 
-    @Override
-    public EmployeeSkill deactivateEmployeeSkill(long employeeSkillId) {
-        EmployeeSkill es = employeeSkillRepo.findById(employeeSkillId).orElseThrow();
-        es.setActive(false);
-        return employeeSkillRepo.save(es);
-    }
-
+    // ✅ FIXED METHOD (THIS WAS YOUR LAST ERROR)
     @Override
     public List<EmployeeSkill> getSkillsForEmployee(long employeeId) {
-        return employeeSkillRepo.findByEmployeeId(employeeId);
+        return employeeSkillRepo.findByEmployee_Id(employeeId);
+    }
+
+    // ✅ DEACTIVATE SKILL
+    @Override
+    public void deactivateEmployeeSkill(long employeeSkillId) {
+        EmployeeSkill es = employeeSkillRepo.findById(employeeSkillId)
+                .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
+
+        es.setActive(false);
+        employeeSkillRepo.save(es);
     }
 }
