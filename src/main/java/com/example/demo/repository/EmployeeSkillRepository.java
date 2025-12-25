@@ -1,20 +1,20 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.Employee;
+import com.example.demo.entity.EmployeeSkill;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import com.example.demo.model.Employee;
-import com.example.demo.model.EmployeeSkill;
-
+@Repository
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    // Used in EmployeeSkillServiceImpl
+    // ✅ FIX for EmployeeSkillServiceImpl
     List<EmployeeSkill> findByEmployee_Id(Long employeeId);
 
-    // ✅ FIX FOR YOUR LAST ERROR
+    // ✅ FIX for SearchQueryServiceImpl
     @Query("""
         SELECT es.employee
         FROM EmployeeSkill es
@@ -22,10 +22,11 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
           AND es.employee.id <> :searcherId
           AND es.active = true
         GROUP BY es.employee
-        HAVING COUNT(DISTINCT es.skill.skillName) = :#{#skillNames.size()}
+        HAVING COUNT(DISTINCT es.skill.skillName) = :skillCount
     """)
     List<Employee> findEmployeesByAllSkillNames(
             @Param("skillNames") List<String> skillNames,
-            @Param("searcherId") long searcherId
+            @Param("searcherId") Long searcherId,
+            @Param("skillCount") long skillCount
     );
 }
