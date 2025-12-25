@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Employee;
+import com.example.demo.entity.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
@@ -14,8 +16,8 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
     }
 
-    @PostMapping
-    public Employee saveEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee); // ✅
+    @GetMapping
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
     }
 }
