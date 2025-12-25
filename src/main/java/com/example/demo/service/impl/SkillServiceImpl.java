@@ -1,23 +1,20 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Skill;
-import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+
+import com.example.demo.model.Skill;
+import com.example.demo.repository.SkillRepository;
+import com.example.demo.service.SkillService;
+
 @Service
+@RequiredArgsConstructor
 public class SkillServiceImpl implements SkillService {
+
+    private final SkillRepository repo;
 
     @Override
     public Skill createSkill(Skill skill) {
-        return skill;
-    }
-
-    @Override
-    public Skill updateSkill(Long id, Skill skill) {
-        return skill;
-    }
-
-    @Override
-    public void deactivateSkill(Long id) {
-        // implementation
+        return repo.save(skill);
     }
 }
