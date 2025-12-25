@@ -1,16 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import java.util.List;
 
 @Entity
-@Table(name = "employees")
-@Data
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Employee {
 
     @Id
@@ -19,7 +12,10 @@ public class Employee {
 
     private String fullName;
     private String email;
-    private String department;
-    private String jobTitle;
     private boolean active = true;
+
+    @OneToMany(mappedBy = "employee")
+    private List<EmployeeSkill> skills;
+
+    // getters and setters
 }

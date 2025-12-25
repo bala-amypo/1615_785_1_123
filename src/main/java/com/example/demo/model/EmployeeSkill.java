@@ -9,15 +9,13 @@ public class EmployeeSkill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @SuppressWarnings("unused")
     private String skillName;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employee;   // ✅ MUST BE ENTITY
+    private Employee employee;   // ✅ ENTITY ONLY
 
-    @SuppressWarnings("unused")
     private boolean active = true;
 
-    // getters & setters
+    // getters and setters
 }
