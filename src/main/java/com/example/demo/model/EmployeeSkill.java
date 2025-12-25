@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+
 @Entity
 public class EmployeeSkill {
 
@@ -14,39 +15,18 @@ public class EmployeeSkill {
     @ManyToOne
     private Skill skill;
 
-    private String proficiencyLevel;
-    private int yearsOfExperience;
-    private boolean active = true;
+    private int proficiency;
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setSkill(Skill skill) {
-        this.skill = skill;
-    }
+    public Employee getEmployee() { return employee; }
+    public void setEmployee(Employee employee) { this.employee = employee; }
 
-    public void setProficiencyLevel(String proficiencyLevel) {
-        this.proficiencyLevel = proficiencyLevel;
-    }
+    public Skill getSkill() { return skill; }
+    public void setSkill(Skill skill) { this.skill = skill; }
 
-    public void setYearsOfExperience(int yearsOfExperience) {
-        this.yearsOfExperience = yearsOfExperience;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public Skill getSkill() {
-        return skill;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public int getProficiency() { return proficiency; }
+    public void setProficiency(int proficiency) { this.proficiency = proficiency; }
 }
