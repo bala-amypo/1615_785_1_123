@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Data   // <-- THIS GENERATES GETTERS + SETTERS
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeSkill {
@@ -14,7 +14,9 @@ public class EmployeeSkill {
     private Long id;
 
     private String proficiencyLevel;
+
     private int yearsOfExperience;
+
     private Boolean active = true;
 
     @ManyToOne

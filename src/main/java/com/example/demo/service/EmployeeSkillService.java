@@ -5,11 +5,9 @@ import com.example.demo.model.EmployeeSkill;
 
 public interface EmployeeSkillService {
 
-    EmployeeSkill addSkillToEmployee(Long employeeId, Long skillId, int proficiency);
+    EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill);
 
-    List<EmployeeSkill> getSkillsByEmployee(Long employeeId);
+    EmployeeSkill deactivateEmployeeSkill(long id);
 
-    List<EmployeeSkill> getEmployeesBySkill(Long skillId);
-
-    void removeSkillFromEmployee(Long employeeSkillId);
+    List<EmployeeSkill> getSkillsForEmployee(long employeeId);
 }

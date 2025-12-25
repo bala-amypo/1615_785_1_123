@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "skills")
-@Data                   // generates getters & setters
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Skill {
@@ -14,8 +13,7 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String skillName;
+    private String name;
 
-    private String description;
+    private Boolean active = true;
 }
