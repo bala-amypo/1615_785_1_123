@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import org.springframework.stereotype.Service;
+
 import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
@@ -21,7 +22,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill deactivateSkill(Long id) {
+    public Skill deactivateSkill(long id) {
         Skill skill = repo.findById(id).orElseThrow();
         skill.setActive(false);
         return repo.save(skill);
