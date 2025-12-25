@@ -17,6 +17,8 @@ public class Employee {
     private String department;
     private String jobTitle;
 
+    private boolean active;   // ✅ ADD THIS
+
     // ===== getters & setters =====
 
     public Long getId() {
@@ -57,5 +59,14 @@ public class Employee {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
+    }
+
+    // ✅ REQUIRED BY EmployeeServiceImpl
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
