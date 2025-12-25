@@ -1,54 +1,21 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
-import com.example.demo.service.EmployeeService;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.repository.EmployeeRepository;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeService employeeService;
+    private final EmployeeRepository employeeRepository;
 
-    // ✅ Inject SERVICE, NOT repository
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    // CREATE
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        return ResponseEntity.ok(employeeService.createEmployee(employee));
-    }
-
-    // GET BY ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
-        return ResponseEntity.ok(employeeService.getEmployeeById(id));
-    }
-
-    // GET ALL
-    @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAllEmployees());
-    }
-
-    // UPDATE
-    @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(
-            @PathVariable Long id,
-            @RequestBody Employee employee) {
-
-        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
-    }
-
-    // DEACTIVATE
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deactivateEmployee(@PathVariable Long id) {
-        employeeService.deactivateEmployee(id);
-        return ResponseEntity.ok("Employee deactivated");
+    public Employee saveEmployee(@RequestBody Employee employee) {
+        return employeeRepository.save(employee); // ✅
     }
 }
