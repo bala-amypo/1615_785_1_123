@@ -8,7 +8,5 @@ import com.example.demo.model.EmployeeSkill;
 
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    List<EmployeeSkill> findByEmployeeId(Long employeeId);
-
-    List<EmployeeSkill> findBySkillId(Long skillId);
+    List<EmployeeSkill> findByEmployeeId(long employeeId);
 }
