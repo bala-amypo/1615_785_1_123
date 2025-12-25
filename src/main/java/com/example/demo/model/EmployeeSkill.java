@@ -1,8 +1,12 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeSkill {
 
     @Id
@@ -10,30 +14,12 @@ public class EmployeeSkill {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 
     @ManyToOne
+    @JoinColumn(name = "skill_id")
     private Skill skill;
 
-    private int proficiency;
-
-    private boolean active;
-
-    // ✅ REQUIRED GETTERS & SETTERS
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public void setSkill(Skill skill) {
-        this.skill = skill;
-    }
-
-    public void setProficiency(int proficiency) {
-        this.proficiency = proficiency;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    private boolean active = true;
 }
