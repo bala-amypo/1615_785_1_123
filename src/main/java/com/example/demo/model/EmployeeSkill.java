@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "employee_skills")
 public class EmployeeSkill {
 
     @Id
@@ -13,9 +14,7 @@ public class EmployeeSkill {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employee;   // ✅ ENTITY ONLY
-
-    private boolean active = true;
+    private Employee employee;
 
     // getters and setters
 }
