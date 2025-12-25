@@ -1,12 +1,11 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SkillServiceImpl implements SkillService {
@@ -23,9 +22,19 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill updateSkill(Long skillId, Skill skill) {
-        Skill existingSkill = skillRepository.findById(skillId)
-                .orElseThrow(() -> new RuntimeException("Skill not found with id: " + skillId));
+    public List<Skill> getAllSkills() {
+        return skillRepository.findAll();
+    }
+
+    @Override
+    public Skill getSkillById(Long id) {
+        return skillRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
+    }
+
+    @Override
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existingSkill = getSkillById(id);
 
         existingSkill.setSkillName(skill.getSkillName());
         existingSkill.setDescription(skill.getDescription());
@@ -34,21 +43,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill getSkillById(Long skillId) {
-        return skillRepository.findById(skillId)
-                .orElseThrow(() -> new RuntimeException("Skill not found with id: " + skillId));
-    }
-
-    @Override
-    public List<Skill> getAllSkills() {
-        return skillRepository.findAll();
-    }
-
-    @Override
-    public void deleteSkill(Long skillId) {
-        if (!skillRepository.existsById(skillId)) {
-            throw new RuntimeException("Skill not found with id: " + skillId);
-        }
-        skillRepository.deleteById(skillId);
+    public void deleteSkill(Long id) {
+        skillRepository.deleteById(id);
     }
 }
