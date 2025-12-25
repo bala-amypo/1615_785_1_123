@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 @Entity
 public class Employee {
 
@@ -14,59 +17,71 @@ public class Employee {
 
     private String fullName;
     private String email;
-    private String department;
-    private String jobTitle;
+    private boolean active;
 
-    private boolean active;   // ✅ ADD THIS
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    // ===== getters & setters =====
-
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void onCreate() {
+        this.active = true;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    // ✅ REQUIRED BY EmployeeServiceImpl
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getEmail() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getEmail'");
+    }
+
+    public Object getFullName() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFullName'");
+    }
+
+    public void setFullName(Object fullName2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setFullName'");
+    }
+
+    public Object getDepartment() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDepartment'");
+    }
+
+    public void setDepartment(Object department) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDepartment'");
+    }
+
+    public Object getJobTitle() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getJobTitle'");
+    }
+
+    public void setJobTitle(Object jobTitle) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setJobTitle'");
+    }
+
+    public void setActive(boolean b) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setActive'");
     }
 }
