@@ -19,8 +19,6 @@ private Employee employee;
 
 @ManyToOne
 private Skill skill;
-
-
 private String proficiencyLevel;
 private Integer yearsOfExperience;
 private Boolean active = true;
