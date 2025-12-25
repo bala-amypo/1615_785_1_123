@@ -1,39 +1,23 @@
 package com.example.demo.model;
 
-
-import com.example.demo.repository.EmployeeSkillRepository;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 public class EmployeeSkill {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    @SuppressWarnings("unused")
+    private String skillName;
 
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;   // ✅ MUST BE ENTITY
 
-@ManyToOne
-private EmployeeSkillRepository employee;
+    @SuppressWarnings("unused")
+    private boolean active = true;
 
-
-@ManyToOne
-private Skill skill;
-private String proficiencyLevel;
-private Integer yearsOfExperience;
-private Boolean active = true;
-
-
+    // getters & setters
 }
