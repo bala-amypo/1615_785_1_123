@@ -1,18 +1,23 @@
-package com.example.demo.service;
+package com.example.demo.model;
 
-import java.util.List;
+import jakarta.persistence.*;
 
-import com.example.demo.model.Skill;
+@Entity
+public class SkillCategory {
 
-public interface SkillService {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    Skill createSkill(Skill skill);
+    private String name;
+    private boolean active = true;
 
-    Skill updateSkill(Long skillId, Skill skill);
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    Skill getSkillById(Long skillId);
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    List<Skill> getAllSkills();
-
-    void deleteSkill(Long skillId);
+    public boolean getActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
