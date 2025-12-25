@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    Employee createEmployee(Employee employee);
+    Employee createEmployee(Employee e);
 
-    Employee updateEmployee(Long id, Employee employee);
+    Employee updateEmployee(Long id, Employee e);
 
     Employee getEmployeeById(Long id);
 

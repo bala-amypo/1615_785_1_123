@@ -1,9 +1,9 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,41 +11,46 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository repo;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeServiceImpl(EmployeeRepository repo) {
+        this.repo = repo;
     }
 
     @Override
-    public Employee createEmployee(Employee employee) {
-        return employeeRepository.save(employee);
+    public Employee createEmployee(Employee e) {
+        repo.findByEmail(e.getEmail())
+            .ifPresent(x -> {
+                throw new IllegalArgumentException("Duplicate email");
+            });
+        return repo.save(e);
     }
 
     @Override
-    public Employee updateEmployee(Long id, Employee employee) {
-        Employee existing = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-
-        existing.setName(employee.getName());
-        return employeeRepository.save(existing);
+    public Employee updateEmployee(Long id, Employee e) {
+        Employee emp = getEmployeeById(id);
+        emp.setFullName(e.getFullName());
+        emp.setDepartment(e.getDepartment());
+        emp.setJobTitle(e.getJobTitle());
+        return repo.save(emp);
     }
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        return repo.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Employee not found"));
     }
 
     @Override
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return repo.findAll();
     }
 
     @Override
     public void deactivateEmployee(Long id) {
-        Employee employee = getEmployeeById(id);
-        employee.setActive(false);
-        employeeRepository.save(employee);
+        Employee emp = getEmployeeById(id);
+        emp.setActive(false);
+        repo.save(emp);
     }
 }
