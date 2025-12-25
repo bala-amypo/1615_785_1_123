@@ -1,13 +1,19 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.model.SkillCategory;
+import com.example.demo.repository.SkillCategoryRepository;
 import org.springframework.stereotype.Service;
-import com.example.demo.service.SkillCategoryService;
 
 @Service
-public class SkillCategoryServiceImpl implements SkillCategoryService {
+public class SkillCategoryServiceImpl {
 
-    @Override
-    public String getCategoryName(Long id) {
-        return "Default Skill Category";
+    private final SkillCategoryRepository repo;
+
+    public SkillCategoryServiceImpl(SkillCategoryRepository repo) {
+        this.repo = repo;
+    }
+
+    public SkillCategory createCategory(SkillCategory category) {
+        return repo.save(category);
     }
 }
