@@ -1,36 +1,39 @@
 package com.example.demo.model;
 
-
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.sql.Timestamp;
-
 
 @Entity
-@Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class SearchQueryRecord {
+public class Skill {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    private String name;
+    private boolean active = true;
 
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-private Long searcherId;
-private String skillsRequested;
-private Integer resultsCount;
-private Timestamp searchedAt;
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-
-@PrePersist
-public void onCreate() {
-searchedAt = new Timestamp(System.currentTimeMillis());
-}
-
-
+    public boolean getActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
+    public Object getSkillName() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSkillName'");
+    }
+    public void setSkillName(Object skillName) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setSkillName'");
+    }
+    public Object getDescription() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDescription'");
+    }
+    public void setDescription(Object description) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDescription'");
+    }
 }

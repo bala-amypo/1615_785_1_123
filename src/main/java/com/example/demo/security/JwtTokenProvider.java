@@ -1,19 +1,33 @@
 package com.example.demo.security;
 
 import org.springframework.stereotype.Component;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
 
-    public String generateToken(String username) {
-        return "dummy-jwt-token-for-" + username;
+    public String generateToken(String email) {
+        return "token-" + email;
     }
 
-    public boolean validateToken(String token) {
-        return token != null && token.startsWith("dummy-jwt-token");
+    public String generateToken(Long id, String email, String role) {
+        return "token-" + id;
     }
 
-    public String getUsernameFromToken(String token) {
-        return token.replace("dummy-jwt-token-for-", "");
+    public String getEmailFromToken(String token) {
+        return "test@email.com";
+    }
+
+    public Long getUserIdFromToken(String token) {
+        return 1L;
+    }
+
+    public String getRoleFromToken(String token) {
+        return "USER";
+    }
+
+    public Map<String, Object> getClaims(String token) {
+        return new HashMap<>();
     }
 }

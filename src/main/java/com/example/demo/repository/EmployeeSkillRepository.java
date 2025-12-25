@@ -1,7 +1,14 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.EmployeeSkill;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.example.demo.model.EmployeeSkill;
+
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
+
+    List<EmployeeSkill> findByEmployeeId(Long employeeId);
+
+    List<EmployeeSkill> findBySkillId(Long skillId);
 }
