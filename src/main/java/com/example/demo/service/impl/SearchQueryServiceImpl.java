@@ -1,12 +1,14 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.Employee;
 import com.example.demo.model.SearchQueryRecord;
+import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.repository.SearchQueryRecordRepository;
 import com.example.demo.service.SearchQueryService;
+
 @Service
 public class SearchQueryServiceImpl implements SearchQueryService {
 
@@ -14,9 +16,8 @@ public class SearchQueryServiceImpl implements SearchQueryService {
     private final EmployeeSkillRepository employeeSkillRepo;
 
     public SearchQueryServiceImpl(
-        SearchQueryRecordRepository recordRepo,
-        EmployeeSkillRepository employeeSkillRepo
-    ) {
+            SearchQueryRecordRepository recordRepo,
+            EmployeeSkillRepository employeeSkillRepo) {
         this.recordRepo = recordRepo;
         this.employeeSkillRepo = employeeSkillRepo;
     }

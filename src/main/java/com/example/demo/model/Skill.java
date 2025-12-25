@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Skill {
@@ -15,5 +16,5 @@ public class Skill {
 
     private String name;
 
-    private Boolean active = true;
+    private boolean active;
 }

@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data   // <-- THIS GENERATES GETTERS + SETTERS
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeSkill {
@@ -13,11 +14,9 @@ public class EmployeeSkill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String proficiencyLevel;
+    private int proficiency;
 
-    private int yearsOfExperience;
-
-    private Boolean active = true;
+    private boolean active;
 
     @ManyToOne
     private Employee employee;

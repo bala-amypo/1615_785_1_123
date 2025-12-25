@@ -15,50 +15,43 @@ import com.example.demo.service.EmployeeSkillService;
 @Service
 public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
-    private final EmployeeSkillRepository employeeSkillRepository;
-    private final EmployeeRepository employeeRepository;
-    private final SkillRepository skillRepository;
+    private final EmployeeSkillRepository employeeSkillRepo;
+    private final EmployeeRepository employeeRepo;
+    private final SkillRepository skillRepo;
 
-    public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
-                                    EmployeeRepository employeeRepository,
-                                    SkillRepository skillRepository) {
-        this.employeeSkillRepository = employeeSkillRepository;
-        this.employeeRepository = employeeRepository;
-        this.skillRepository = skillRepository;
+    public EmployeeSkillServiceImpl(
+            EmployeeSkillRepository employeeSkillRepo,
+            EmployeeRepository employeeRepo,
+            SkillRepository skillRepo) {
+        this.employeeSkillRepo = employeeSkillRepo;
+        this.employeeRepo = employeeRepo;
+        this.skillRepo = skillRepo;
     }
 
     @Override
-    public EmployeeSkill addSkillToEmployee(Long employeeId, Long skillId, int proficiency) {
+    public EmployeeSkill addSkillToEmployee(long employeeId, long skillId, int proficiency) {
 
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employeeId));
-
-        Skill skill = skillRepository.findById(skillId)
-                .orElseThrow(() -> new RuntimeException("Skill not found with id: " + skillId));
+        Employee employee = employeeRepo.findById(employeeId).orElseThrow();
+        Skill skill = skillRepo.findById(skillId).orElseThrow();
 
         EmployeeSkill employeeSkill = new EmployeeSkill();
         employeeSkill.setEmployee(employee);
         employeeSkill.setSkill(skill);
         employeeSkill.setProficiency(proficiency);
+        employeeSkill.setActive(true);
 
-        return employeeSkillRepository.save(employeeSkill);
+        return employeeSkillRepo.save(employeeSkill);
     }
 
     @Override
-    public List<EmployeeSkill> getSkillsByEmployee(Long employeeId) {
-        return employeeSkillRepository.findByEmployeeId(employeeId);
+    public EmployeeSkill deactivateEmployeeSkill(long employeeSkillId) {
+        EmployeeSkill es = employeeSkillRepo.findById(employeeSkillId).orElseThrow();
+        es.setActive(false);
+        return employeeSkillRepo.save(es);
     }
 
     @Override
-    public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
-        return employeeSkillRepository.findBySkillId(skillId);
-    }
-
-    @Override
-    public void removeSkillFromEmployee(Long employeeSkillId) {
-        if (!employeeSkillRepository.existsById(employeeSkillId)) {
-            throw new RuntimeException("EmployeeSkill not found with id: " + employeeSkillId);
-        }
-        employeeSkillRepository.deleteById(employeeSkillId);
+    public List<EmployeeSkill> getSkillsForEmployee(long employeeId) {
+        return employeeSkillRepo.findByEmployeeId(employeeId);
     }
 }
