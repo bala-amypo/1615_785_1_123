@@ -1,50 +1,54 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
-import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.service.EmployeeService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeService service;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService service) {
-        this.service = service;
+    // ✅ Inject SERVICE, NOT repository
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
+    // CREATE
     @PostMapping
-    public Employee create(@RequestBody EmployeeSkillRepository e) {
-        return service.createEmployee(e);
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 
-    @PutMapping("/{id}")
-    public Employee update(@PathVariable Long id, @RequestBody EmployeeSkillRepository e) {
-        return service.updateEmployee(id, e);
-    }
-
+    // GET BY ID
     @GetMapping("/{id}")
-    public Employee get(@PathVariable Long id) {
-        return service.getEmployeeById(id);
+    public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
+    // GET ALL
     @GetMapping
-    public List<Employee> listAll() {
-        return service.getAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-    @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-        service.deactivateEmployee(id);
+    // UPDATE
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> updateEmployee(
+            @PathVariable Long id,
+            @RequestBody Employee employee) {
+
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+    }
+
+    // DEACTIVATE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deactivateEmployee(@PathVariable Long id) {
+        employeeService.deactivateEmployee(id);
+        return ResponseEntity.ok("Employee deactivated");
     }
 }
