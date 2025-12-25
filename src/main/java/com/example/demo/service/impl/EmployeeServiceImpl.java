@@ -1,56 +1,33 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repo;
 
-    public EmployeeServiceImpl(EmployeeRepository repo) {
-        this.repo = repo;
+    @Override
+    public Employee createEmployee(Employee employee) {
+        return repo.save(employee);
     }
 
     @Override
-    public Employee createEmployee(Employee e) {
-        repo.findByEmail(e.getEmail())
-            .ifPresent(x -> {
-                throw new IllegalArgumentException("Duplicate email");
-            });
-        return repo.save(e);
-    }
-
-    @Override
-    public Employee updateEmployee(Long id, Employee e) {
-        Employee emp = getEmployeeById(id);
-        emp.setFullName(e.getFullName());
-        emp.setDepartment(e.getDepartment());
-        emp.setJobTitle(e.getJobTitle());
-        return repo.save(emp);
-    }
-
-    @Override
-    public Employee getEmployeeById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Employee not found"));
+    public Employee getEmployeeByEmail(String email) {
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
     public List<Employee> getAllEmployees() {
         return repo.findAll();
-    }
-
-    @Override
-    public void deactivateEmployee(Long id) {
-        Employee emp = getEmployeeById(id);
-        emp.setActive(false);
-        repo.save(emp);
     }
 }

@@ -1,13 +1,11 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.EmployeeSkill;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.model.Employee;
 
-import java.util.List;
-public interface EmployeeRepository extends JpaRepository<EmployeeSkill, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
-
-    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
+    Optional<Employee> findByEmail(String email);
 }
