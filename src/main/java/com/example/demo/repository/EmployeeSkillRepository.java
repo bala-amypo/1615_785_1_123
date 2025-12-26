@@ -9,14 +9,11 @@ import java.util.List;
 
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
-    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
+    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long id);
+    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long id);
 
-    @Query("""
-      SELECT es.employee FROM EmployeeSkill es
-      WHERE LOWER(es.skill.name) IN :skills
-      GROUP BY es.employee
-      HAVING COUNT(DISTINCT es.skill.name) = :count
-    """)
-    List<Employee> findEmployeesByAllSkillNames(List<String> skills, long count);
+    @Query("SELECT es.employee FROM EmployeeSkill es " +
+           "WHERE LOWER(es.skill.name) IN :skills " +
+           "GROUP BY es.employee HAVING COUNT(DISTINCT es.skill.name) = :count")
+    List<Employee> findEmployeesByAllSkillNames(List<String> skills, Long count);
 }
