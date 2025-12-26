@@ -1,39 +1,43 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
+import java.security.Key;
 import java.util.Date;
 
+@Component
 public class JwtTokenProvider {
-
-    private final String secret = "secretKey123";
-    private final long validity = 3600000;
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final long validityInMilliseconds = 3600000; // 1 hour
 
     public String generateToken(Long userId, String email, String role) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
         return Jwts.builder()
-                .claim("userId", userId)
-                .claim("email", email)
-                .claim("role", role)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + validity))
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
+            .setSubject(email)
+            .claim("userId", userId)
+            .claim("role", role)
+            .setIssuedAt(now)
+            .setExpiration(validity)
+            .signWith(key)
+            .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            getClaims(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-    public Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    }
-
     public String getEmailFromToken(String token) {
-        return getClaims(token).get("email", String.class);
+        return getClaims(token).getSubject();
     }
 
     public Long getUserIdFromToken(String token) {
@@ -42,5 +46,9 @@ public class JwtTokenProvider {
 
     public String getRoleFromToken(String token) {
         return getClaims(token).get("role", String.class);
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 }

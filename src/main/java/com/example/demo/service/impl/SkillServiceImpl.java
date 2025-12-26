@@ -5,11 +5,8 @@ import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class SkillServiceImpl implements SkillService {
-
     private final SkillRepository skillRepository;
 
     public SkillServiceImpl(SkillRepository skillRepository) {
@@ -24,28 +21,15 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill updateSkill(Long id, Skill skill) {
         Skill existing = skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
-
+            .orElseThrow(() -> new RuntimeException("Skill not found"));
         existing.setName(skill.getName());
-        existing.setActive(skill.isActive());
-
         return skillRepository.save(existing);
     }
 
     @Override
-    public Skill getSkillById(Long id) {
-        return skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
-    }
-
-    @Override
-    public List<Skill> getAllSkills() {
-        return skillRepository.findAll();
-    }
-
-    @Override
     public void deactivateSkill(Long id) {
-        Skill skill = getSkillById(id);
+        Skill skill = skillRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Skill not found"));
         skill.setActive(false);
         skillRepository.save(skill);
     }
