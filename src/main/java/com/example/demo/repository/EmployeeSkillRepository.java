@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.EmployeeSkill;
-import com.example.demo.entity.Employee;
+import com.example.demo.model.EmployeeSkill;
+import com.example.demo.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
