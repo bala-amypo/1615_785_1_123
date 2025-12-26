@@ -5,7 +5,6 @@ import com.example.demo.entity.SearchQueryRecord;
 import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.repository.SearchQueryRecordRepository;
 import com.example.demo.service.SearchQueryService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,28 +23,16 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 
     @Override
     public List<Employee> searchEmployeesBySkills(List<String> skills, Long searcherId) {
-
-        if (skills == null || skills.isEmpty()) {
-            throw new IllegalArgumentException("Skills cannot be empty");
-        }
-
-        List<String> normalized = skills.stream()
-                .map(s -> s.trim().toLowerCase())
-                .distinct()
-                .toList();
-
-        List<Employee> employees =
-                employeeSkillRepo.findEmployeesByAllSkillNames(
-                        normalized, normalized.size());
+        List<Employee> result =
+                employeeSkillRepo.findEmployeesByAllSkillNames(skills, skills.size());
 
         SearchQueryRecord record = new SearchQueryRecord();
         record.setSearcherId(searcherId);
-        record.setSkillsRequested(String.join(",", normalized));
-        record.setResultsCount(employees.size());
+        record.setSkillsRequested(String.join(",", skills));
+        record.setResultsCount(result.size());
 
         searchQueryRepo.save(record);
-
-        return employees;
+        return result;
     }
 
     @Override
