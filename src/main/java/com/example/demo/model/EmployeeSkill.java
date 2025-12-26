@@ -1,26 +1,21 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class EmployeeSkill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Employee employee;
+    private Long employeeId;
 
-    @ManyToOne
-    private Skill skill;
+    private Long skillId;
 
-    private String proficiencyLevel;
-    private int yearsOfExperience;
+    private String level;   // <-- REQUIRED
 
-    private Boolean active = true;
+    private boolean active = true; // <-- REQUIRED
 }
