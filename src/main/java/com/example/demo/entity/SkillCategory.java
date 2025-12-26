@@ -1,12 +1,8 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class SkillCategory {
 
     @Id
@@ -14,4 +10,13 @@ public class SkillCategory {
     private Long id;
 
     private String categoryName;
+    private Boolean active = true;
+
+    public Long getId() { return id; }
+
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
