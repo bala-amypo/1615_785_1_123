@@ -7,9 +7,11 @@ public interface EmployeeSkillService {
 
     EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill);
 
-    void deactivateEmployeeSkill(Long id);
+    EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill employeeSkill);
 
     List<EmployeeSkill> getSkillsForEmployee(Long employeeId);
 
     List<EmployeeSkill> getEmployeesBySkill(Long skillId);
+
+    void deactivateEmployeeSkill(Long id);
 }

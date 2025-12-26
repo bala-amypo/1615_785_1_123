@@ -3,32 +3,50 @@ package com.example.demo.service.impl;
 import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+import java.util.List;
+
+@Service
 public class SkillServiceImpl implements SkillService {
 
-    private final SkillRepository repository;
+    private final SkillRepository skillRepository;
 
-    @Override
-    public Skill createSkill(Skill skill) {
-        skill.setActive(true);
-        return repository.save(skill);
+    public SkillServiceImpl(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
     }
 
     @Override
-    public Skill updateSkill(Long id, Skill updated) {
-        Skill skill = repository.findById(id)
+    public Skill createSkill(Skill skill) {
+        return skillRepository.save(skill);
+    }
+
+    @Override
+    public Skill updateSkill(Long id, Skill skill) {
+        Skill existing = skillRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
-        skill.setName(updated.getName());
-        return repository.save(skill);
+
+        existing.setName(skill.getName());
+        existing.setActive(skill.isActive());
+
+        return skillRepository.save(existing);
+    }
+
+    @Override
+    public Skill getSkillById(Long id) {
+        return skillRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
+    }
+
+    @Override
+    public List<Skill> getAllSkills() {
+        return skillRepository.findAll();
     }
 
     @Override
     public void deactivateSkill(Long id) {
-        Skill skill = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
+        Skill skill = getSkillById(id);
         skill.setActive(false);
-        repository.save(skill);
+        skillRepository.save(skill);
     }
 }
