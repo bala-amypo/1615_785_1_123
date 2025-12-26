@@ -1,52 +1,43 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Employee;
-import com.example.demo.repository.EmployeeRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import com.example.demo.model.Employee;
+import com.example.demo.service.EmployeeService;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/api/employees")
+@RequiredArgsConstructor
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
-    // ✅ SINGLE GET METHOD (by ID)
-    @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
-    }
-
-    // ✅ POST - create employee
+    // CREATE
     @PostMapping
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
+        return ResponseEntity.ok(employeeService.saveEmployee(employee));
     }
 
-    // ✅ PUT - update employee
+    // READ
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    }
+
+    // UPDATE ✅ PUT MAPPING
     @PutMapping("/{id}")
-    public Employee updateEmployee(
+    public ResponseEntity<Employee> update(
             @PathVariable Long id,
-            @RequestBody Employee employeeDetails) {
+            @RequestBody Employee employee) {
 
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
-
-        employee.setName(employeeDetails.getName());
-        employee.setEmail(employeeDetails.getEmail());
-        employee.setSalary(employeeDetails.getSalary());
-
-        return employeeRepository.save(employee);
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
     }
 
-    // ✅ DELETE - delete employee
+    // DELETE (SOFT DELETE)
     @DeleteMapping("/{id}")
-    public String deleteEmployee(@PathVariable Long id) {
-        employeeRepository.deleteById(id);
-        return "Employee deleted successfully with id: " + id;
+    public ResponseEntity<String> deactivate(@PathVariable Long id) {
+        employeeService.deactivateEmployee(id);
+        return ResponseEntity.ok("Employee deactivated");
     }
 }
