@@ -13,17 +13,15 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
 
     List<EmployeeSkill> findBySkillId(Long skillId);
 
-    // 🔥 REQUIRED METHOD (FIXES YOUR ERROR)
-   @Query("""
-    SELECT es.employee.id
-    FROM EmployeeSkill es
-    WHERE es.skill.name IN :skills
-    GROUP BY es.employee.id
-    HAVING COUNT(DISTINCT es.skill.name) = :skillCount
-"")
-List<Long> findEmployeeIdsBySkillNames(
-        @Param("skills") List<String> skills,
-        @Param("skillCount") long skillCount
-);
-
+    @Query("""
+        SELECT es.employee.id
+        FROM EmployeeSkill es
+        WHERE es.skill.name IN :skillNames
+        GROUP BY es.employee.id
+        HAVING COUNT(DISTINCT es.skill.name) = :skillCount
+    """)
+    List<Long> findEmployeesByAllSkillNames(
+            @Param("skillNames") List<String> skillNames,
+            @Param("skillCount") long skillCount
+    );
 }
