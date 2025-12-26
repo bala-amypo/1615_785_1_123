@@ -1,33 +1,46 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.SkillCategory;
+import com.example.demo.service.SkillCategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/skill-categories")
+@Tag(name = "Skill Categories")
 public class SkillCategoryController {
 
+    private final SkillCategoryService skillCategoryService;
+
+    public SkillCategoryController(SkillCategoryService skillCategoryService) {
+        this.skillCategoryService = skillCategoryService;
+    }
+
     @PostMapping
-    public String createCategory() {
-        return "Category created";
+    public SkillCategory create(@RequestBody SkillCategory category) {
+        return skillCategoryService.createCategory(category);
     }
 
     @PutMapping("/{id}")
-    public String updateCategory(@PathVariable Long id) {
-        return "Category updated";
+    public SkillCategory update(@PathVariable Long id,
+                                @RequestBody SkillCategory category) {
+        return skillCategoryService.updateCategory(id, category);
     }
 
     @GetMapping("/{id}")
-    public String getCategory(@PathVariable Long id) {
-        return "Category fetched";
+    public SkillCategory getById(@PathVariable Long id) {
+        return skillCategoryService.getCategoryById(id);
     }
 
     @GetMapping
-    public String listCategories() {
-        return "All categories listed";
+    public List<SkillCategory> getAll() {
+        return skillCategoryService.getAllCategories();
     }
 
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable Long id) {
-        return "Category deactivated";
+    public void deactivate(@PathVariable Long id) {
+        skillCategoryService.deactivateCategory(id);
     }
 }

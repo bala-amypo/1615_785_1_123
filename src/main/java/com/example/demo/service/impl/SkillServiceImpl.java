@@ -3,37 +3,32 @@ package com.example.demo.service.impl;
 import com.example.demo.model.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
-@Service
+@RequiredArgsConstructor
 public class SkillServiceImpl implements SkillService {
 
-    private final SkillRepository skillRepository;
-
-    public SkillServiceImpl(SkillRepository skillRepository) {
-        this.skillRepository = skillRepository;
-    }
+    private final SkillRepository repository;
 
     @Override
     public Skill createSkill(Skill skill) {
         skill.setActive(true);
-        return skillRepository.save(skill);
+        return repository.save(skill);
     }
 
     @Override
-    public Skill updateSkill(Long id, Skill skill) {
-        Skill existing = skillRepository.findById(id)
+    public Skill updateSkill(Long id, Skill updated) {
+        Skill skill = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
-
-        existing.setName(skill.getName());
-        return skillRepository.save(existing);
+        skill.setName(updated.getName());
+        return repository.save(skill);
     }
 
     @Override
     public void deactivateSkill(Long id) {
-        Skill skill = skillRepository.findById(id)
+        Skill skill = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
         skill.setActive(false);
-        skillRepository.save(skill);
+        repository.save(skill);
     }
 }

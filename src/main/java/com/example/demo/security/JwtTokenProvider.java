@@ -1,24 +1,27 @@
 package com.example.demo.security;
 
 import io.jsonwebtoken.*;
-import java.util.*;
+import java.util.Date;
 
 public class JwtTokenProvider {
 
-    private final String SECRET = "secret-key";
+    private final String secret = "secretKey123";
+    private final long validity = 3600000;
 
-    public String generateToken(Long id, String email, String role) {
+    public String generateToken(Long userId, String email, String role) {
         return Jwts.builder()
-                .claim("id", id)
+                .claim("userId", userId)
                 .claim("email", email)
                 .claim("role", role)
-                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            getClaims(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -26,8 +29,7 @@ public class JwtTokenProvider {
     }
 
     public Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET)
-                .parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     public String getEmailFromToken(String token) {
@@ -35,7 +37,7 @@ public class JwtTokenProvider {
     }
 
     public Long getUserIdFromToken(String token) {
-        return getClaims(token).get("id", Long.class);
+        return getClaims(token).get("userId", Long.class);
     }
 
     public String getRoleFromToken(String token) {

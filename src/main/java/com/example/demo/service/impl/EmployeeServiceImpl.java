@@ -1,46 +1,44 @@
 package com.example.demo.service.impl;
 
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
+import lombok.RequiredArgsConstructor;
+import java.util.List;
 
-@Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository repository;
+
+    @Override
+    public Employee createEmployee(Employee employee) {
+        return repository.save(employee);
+    }
+
+    @Override
+    public Employee updateEmployee(Long id, Employee updated) {
+        Employee existing = getEmployeeById(id);
+        existing.setFullName(updated.getFullName());
+        existing.setEmail(updated.getEmail());
+        return repository.save(existing);
+    }
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
     }
 
     @Override
-    public Employee saveEmployee(Employee employee) {
-        return employeeRepository.save(employee);
-    }
-
-    @Override
-    public Employee updateEmployee(Long id, Employee updatedEmployee) {
-
-        Employee existing = getEmployeeById(id);
-
-        existing.setFullName(updatedEmployee.getFullName());
-        existing.setEmail(updatedEmployee.getEmail());
-        existing.setSalary(updatedEmployee.getSalary());
-        existing.setRole(updatedEmployee.getRole());
-        existing.setActive(updatedEmployee.getActive());
-
-        return employeeRepository.save(existing);
+    public List<Employee> getAllEmployees() {
+        return repository.findAll();
     }
 
     @Override
     public void deactivateEmployee(Long id) {
         Employee emp = getEmployeeById(id);
         emp.setActive(false);
-        employeeRepository.save(emp);
+        repository.save(emp);
     }
 }

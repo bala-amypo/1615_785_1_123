@@ -1,43 +1,46 @@
 package com.example.demo.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import lombok.RequiredArgsConstructor;
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
-@RequiredArgsConstructor
+@Tag(name = "Employees")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    // CREATE
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
     @PostMapping
-    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-        return ResponseEntity.ok(employeeService.saveEmployee(employee));
+    public Employee create(@RequestBody Employee employee) {
+        return employeeService.createEmployee(employee);
     }
 
-    // READ
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(employeeService.getEmployeeById(id));
-    }
-
-    // UPDATE ✅ PUT MAPPING
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> update(
-            @PathVariable Long id,
-            @RequestBody Employee employee) {
-
-        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
+    public Employee update(@PathVariable Long id,
+                           @RequestBody Employee employee) {
+        return employeeService.updateEmployee(id, employee);
     }
 
-    // DELETE (SOFT DELETE)
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deactivate(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public Employee getById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
+    }
+
+    @GetMapping
+    public List<Employee> getAll() {
+        return employeeService.getAllEmployees();
+    }
+
+    @PutMapping("/{id}/deactivate")
+    public void deactivate(@PathVariable Long id) {
         employeeService.deactivateEmployee(id);
-        return ResponseEntity.ok("Employee deactivated");
     }
 }

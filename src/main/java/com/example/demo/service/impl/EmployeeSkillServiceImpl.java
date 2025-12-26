@@ -1,59 +1,50 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Employee;
-import com.example.demo.model.EmployeeSkill;
-import com.example.demo.model.Skill;
-import com.example.demo.repository.EmployeeRepository;
-import com.example.demo.repository.EmployeeSkillRepository;
-import com.example.demo.repository.SkillRepository;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.EmployeeSkillService;
-import org.springframework.stereotype.Service;
-
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 
-@Service
+@RequiredArgsConstructor
 public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     private final EmployeeSkillRepository esRepo;
     private final EmployeeRepository empRepo;
     private final SkillRepository skillRepo;
 
-    public EmployeeSkillServiceImpl(EmployeeSkillRepository e, EmployeeRepository emp, SkillRepository s) {
-        this.esRepo = e;
-        this.empRepo = emp;
-        this.skillRepo = s;
-    }
-
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill es) {
-
-        if (es.getYearsOfExperience() < 0)
-            throw new IllegalArgumentException("Experience years invalid");
-
-        if (!List.of("Beginner","Intermediate","Advanced").contains(es.getProficiencyLevel()))
-            throw new IllegalArgumentException("Invalid proficiency");
 
         Employee emp = empRepo.findById(es.getEmployee().getId()).orElseThrow();
         Skill skill = skillRepo.findById(es.getSkill().getId()).orElseThrow();
 
         if (!emp.getActive()) throw new IllegalArgumentException("inactive employee");
         if (!skill.getActive()) throw new IllegalArgumentException("inactive skill");
+        if (es.getYearsOfExperience() < 0)
+            throw new IllegalArgumentException("Experience years invalid");
 
-        es.setActive(true);
+        List<String> allowed = List.of("Beginner", "Intermediate", "Advanced");
+        if (!allowed.contains(es.getProficiencyLevel()))
+            throw new IllegalArgumentException("Invalid proficiency");
+
         return esRepo.save(es);
     }
 
-    public List<EmployeeSkill> getSkillsForEmployee(Long id) {
-        return esRepo.findByEmployeeIdAndActiveTrue(id);
-    }
-
-    public List<EmployeeSkill> getEmployeesBySkill(Long id) {
-        return esRepo.findBySkillIdAndActiveTrue(id);
-    }
-
+    @Override
     public void deactivateEmployeeSkill(Long id) {
         EmployeeSkill es = esRepo.findById(id).orElseThrow();
         es.setActive(false);
         esRepo.save(es);
+    }
+
+    @Override
+    public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
+        return esRepo.findByEmployeeIdAndActiveTrue(employeeId);
+    }
+
+    @Override
+    public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
+        return esRepo.findBySkillIdAndActiveTrue(skillId);
     }
 }
