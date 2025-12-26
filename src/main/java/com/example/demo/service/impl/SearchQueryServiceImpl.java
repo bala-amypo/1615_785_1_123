@@ -1,54 +1,44 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.Employee;
+import com.example.demo.model.SearchQuery;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.repository.EmployeeSkillRepository;
+import com.example.demo.repository.SearchQueryRepository;
 import com.example.demo.service.SearchQueryService;
-import lombok.RequiredArgsConstructor;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+import java.util.List;
+
+@Service
 public class SearchQueryServiceImpl implements SearchQueryService {
 
-    private final SearchQueryRecordRepository queryRepo;
     private final EmployeeSkillRepository esRepo;
+    private final EmployeeRepository employeeRepo;
+    private final SearchQueryRepository searchQueryRepo;
 
-    @Override
-    public List<Employee> searchEmployeesBySkills(List<String> skills, Long searcherId) {
-
-        if (skills == null || skills.isEmpty())
-            throw new IllegalArgumentException("Skills list must not be empty");
-
-        List<String> normalized = skills.stream()
-                .map(String::trim)
-                .map(String::toLowerCase)
-                .distinct()
-                .collect(Collectors.toList());
-
-        List<Employee> result =
-                esRepo.findEmployeesByAllSkillNames(normalized, (long) normalized.size());
-
-        SearchQueryRecord record = new SearchQueryRecord();
-        record.setSearcherId(searcherId);
-        record.setSkillsRequested(String.join(",", normalized));
-        record.setResultsCount(result.size());
-
-        queryRepo.save(record);
-        return result;
+    public SearchQueryServiceImpl(EmployeeSkillRepository esRepo,
+                                  EmployeeRepository employeeRepo,
+                                  SearchQueryRepository searchQueryRepo) {
+        this.esRepo = esRepo;
+        this.employeeRepo = employeeRepo;
+        this.searchQueryRepo = searchQueryRepo;
     }
 
     @Override
-    public void saveQuery(SearchQueryRecord record) {
-        queryRepo.save(record);
-    }
+    public List<Employee> searchEmployeesBySkills(List<String> skillNames, Long userId) {
 
-    @Override
-    public SearchQueryRecord getQueryById(Long id) {
-        return queryRepo.findById(id).orElseThrow();
-    }
+        // 1️⃣ Save search query (optional but required by spec)
+        SearchQuery query = new SearchQuery();
+        query.setUserId(userId);
+        query.setSkills(skillNames);
+        searchQueryRepo.save(query);
 
-    @Override
-    public List<SearchQueryRecord> getQueriesForUser(Long userId) {
-        return queryRepo.findBySearcherId(userId);
+        // 2️⃣ Get matching employee IDs
+        List<Long> employeeIds =
+                esRepo.findEmployeesByAllSkillNames(skillNames, skillNames.size());
+
+        // 3️⃣ Fetch Employee entities
+        return employeeRepo.findAllById(employeeIds);
     }
 }
