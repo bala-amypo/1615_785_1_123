@@ -7,7 +7,11 @@ public interface SkillService {
 
     Skill createSkill(Skill skill);
 
-    Skill deactivateSkill(Long id);
+    Skill getSkillById(Long id);
 
     List<Skill> getAllSkills();
+
+    Skill updateSkill(Long id, Skill skill);
+
+    void deactivateSkill(Long id);
 }
