@@ -51,6 +51,15 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
+    public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill employeeSkill) {
+        EmployeeSkill existing = employeeSkillRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
+        existing.setProficiencyLevel(employeeSkill.getProficiencyLevel());
+        existing.setYearsOfExperience(employeeSkill.getYearsOfExperience());
+        return employeeSkillRepository.save(existing);
+    }
+
+    @Override
     public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
         return employeeSkillRepository.findByEmployeeIdAndActiveTrue(employeeId);
     }

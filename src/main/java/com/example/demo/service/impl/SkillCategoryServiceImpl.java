@@ -4,6 +4,7 @@ import com.example.demo.model.SkillCategory;
 import com.example.demo.repository.SkillCategoryRepository;
 import com.example.demo.service.SkillCategoryService;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class SkillCategoryServiceImpl implements SkillCategoryService {
@@ -16,5 +17,32 @@ public class SkillCategoryServiceImpl implements SkillCategoryService {
     @Override
     public SkillCategory createCategory(SkillCategory category) {
         return skillCategoryRepository.save(category);
+    }
+
+    @Override
+    public SkillCategory updateCategory(Long id, SkillCategory category) {
+        SkillCategory existing = skillCategoryRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("SkillCategory not found"));
+        existing.setCategoryName(category.getCategoryName());
+        return skillCategoryRepository.save(existing);
+    }
+
+    @Override
+    public SkillCategory getCategoryById(Long id) {
+        return skillCategoryRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("SkillCategory not found"));
+    }
+
+    @Override
+    public List<SkillCategory> getAllCategories() {
+        return skillCategoryRepository.findAll();
+    }
+
+    @Override
+    public void deactivateCategory(Long id) {
+        SkillCategory category = skillCategoryRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("SkillCategory not found"));
+        category.setActive(false);
+        skillCategoryRepository.save(category);
     }
 }
