@@ -1,18 +1,24 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "search_queries")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SearchQuery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-
+    // Skills used in search
     @ElementCollection
     @CollectionTable(
             name = "search_query_skills",
@@ -21,28 +27,9 @@ public class SearchQuery {
     @Column(name = "skill_name")
     private List<String> skills;
 
-    // getters and setters
-    public Long getId() {
-        return id;
-    }
+    // Minimum experience filter
+    private long minExperience;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public List<String> getSkills() {
-        return skills;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
-    }
+    // Timestamp of search
+    private LocalDateTime searchedAt;
 }
