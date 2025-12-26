@@ -1,11 +1,10 @@
 package com.example.demo.repository;
 
-import java.util.List;
+import com.example.demo.entity.SearchQueryRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.model.SearchQueryRecord;
 
-public interface SearchQueryRecordRepository
-        extends JpaRepository<SearchQueryRecord, Long> {
+import java.util.List;
 
-    List<SearchQueryRecord> findBySearcherId(long searcherId);
+public interface SearchQueryRecordRepository extends JpaRepository<SearchQueryRecord, Long> {
+    List<SearchQueryRecord> findBySearcherId(Long searcherId);
 }
