@@ -1,25 +1,37 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Employee;
+import com.example.demo.model.SearchQueryRecord;
+import com.example.demo.service.SearchQueryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/search")
+@Tag(name = "Search")
 public class SearchQueryController {
 
+    private final SearchQueryService searchQueryService;
+
+    public SearchQueryController(SearchQueryService searchQueryService) {
+        this.searchQueryService = searchQueryService;
+    }
+
     @PostMapping("/employees")
-    public String searchEmployees(@RequestBody List<String> skills) {
-        return "Employees searched by skills";
+    public List<Employee> searchEmployees(@RequestBody List<String> skills,
+                                          @RequestParam Long userId) {
+        return searchQueryService.searchEmployeesBySkills(skills, userId);
     }
 
     @GetMapping("/{id}")
-    public String getQuery(@PathVariable Long id) {
-        return "Query record fetched";
+    public SearchQueryRecord getQuery(@PathVariable Long id) {
+        return searchQueryService.getQueryById(id);
     }
 
     @GetMapping("/user/{userId}")
-    public String listUserQueries(@PathVariable Long userId) {
-        return "Past queries listed";
+    public List<SearchQueryRecord> getUserQueries(@PathVariable Long userId) {
+        return searchQueryService.getQueriesForUser(userId);
     }
 }
