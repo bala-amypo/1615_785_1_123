@@ -1,50 +1,53 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.EmployeeSkill;
+import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.service.EmployeeSkillService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-@RequiredArgsConstructor
+@Service
 public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
-    private final EmployeeSkillRepository esRepo;
-    private final EmployeeRepository empRepo;
-    private final SkillRepository skillRepo;
+    private final EmployeeSkillRepository repository;
 
-    @Override
-    public EmployeeSkill createEmployeeSkill(EmployeeSkill es) {
-
-        Employee emp = empRepo.findById(es.getEmployee().getId()).orElseThrow();
-        Skill skill = skillRepo.findById(es.getSkill().getId()).orElseThrow();
-
-        if (!emp.getActive()) throw new IllegalArgumentException("inactive employee");
-        if (!skill.getActive()) throw new IllegalArgumentException("inactive skill");
-        if (es.getYearsOfExperience() < 0)
-            throw new IllegalArgumentException("Experience years invalid");
-
-        List<String> allowed = List.of("Beginner", "Intermediate", "Advanced");
-        if (!allowed.contains(es.getProficiencyLevel()))
-            throw new IllegalArgumentException("Invalid proficiency");
-
-        return esRepo.save(es);
+    public EmployeeSkillServiceImpl(EmployeeSkillRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public void deactivateEmployeeSkill(Long id) {
-        EmployeeSkill es = esRepo.findById(id).orElseThrow();
-        es.setActive(false);
-        esRepo.save(es);
+    public EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill) {
+        return repository.save(employeeSkill);
+    }
+
+    @Override
+    public EmployeeSkill updateEmployeeSkill(Long id, EmployeeSkill employeeSkill) {
+        EmployeeSkill existing = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mapping not found"));
+
+        existing.setLevel(employeeSkill.getLevel());
+        existing.setActive(employeeSkill.isActive());
+
+        return repository.save(existing);
     }
 
     @Override
     public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
-        return esRepo.findByEmployeeIdAndActiveTrue(employeeId);
+        return repository.findByEmployeeId(employeeId);
     }
 
     @Override
     public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
-        return esRepo.findBySkillIdAndActiveTrue(skillId);
+        return repository.findBySkillId(skillId);
+    }
+
+    @Override
+    public void deactivateEmployeeSkill(Long id) {
+        EmployeeSkill mapping = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mapping not found"));
+
+        mapping.setActive(false);
+        repository.save(mapping);
     }
 }
