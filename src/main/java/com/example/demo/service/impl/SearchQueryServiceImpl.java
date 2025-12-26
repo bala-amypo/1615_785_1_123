@@ -6,22 +6,48 @@ import com.example.demo.service.SearchQueryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class SearchQueryServiceImpl implements SearchQueryService {
 
-    private final EmployeeSkillRepository employeeSkillRepo;
+    private final SearchQueryRecordRepository repo;
+    private final EmployeeSkillRepository esRepo;
 
-    public SearchQueryServiceImpl(EmployeeSkillRepository employeeSkillRepo) {
-        this.employeeSkillRepo = employeeSkillRepo;
+    public SearchQueryServiceImpl(SearchQueryRecordRepository repo,
+                                  EmployeeSkillRepository esRepo) {
+        this.repo = repo;
+        this.esRepo = esRepo;
     }
 
-    @Override
     public List<Employee> searchEmployeesBySkills(List<String> skills, Long searcherId) {
-        return employeeSkillRepo.findEmployeesByAllSkillNames(
-                skills,
-                searcherId,
-                skills.size()
-        );
+        if (skills == null || skills.isEmpty())
+            throw new IllegalArgumentException("must not be empty");
+
+        List<String> normalized = skills.stream()
+                .map(s -> s.trim().toLowerCase())
+                .distinct()
+                .toList();
+
+        List<Employee> result =
+                esRepo.findEmployeesByAllSkillNames(normalized, normalized.size());
+
+        SearchQueryRecord r = new SearchQueryRecord();
+        r.setSearcherId(searcherId);
+        r.setSkillsRequested(String.join(",", normalized));
+        r.setResultsCount(result.size());
+        repo.save(r);
+
+        return result;
+    }
+
+    public SearchQueryRecord getQueryById(Long id) {
+        return repo.findById(id).orElseThrow();
+    }
+
+    public List<SearchQueryRecord> getQueriesForUser(Long id) {
+        return repo.findBySearcherId(id);
+    }
+
+    public void saveQuery(SearchQueryRecord r) {
+        repo.save(r);
     }
 }
