@@ -15,11 +15,11 @@ public class SearchQueryServiceImpl implements SearchQueryService {
 
     private final EmployeeSkillRepository esRepo;
     private final EmployeeRepository employeeRepo;
-    private final SearchQueryRepository searchQueryRepo;
+    private final SearchQueryRecordRepository searchQueryRepo;
 
     public SearchQueryServiceImpl(EmployeeSkillRepository esRepo,
                                   EmployeeRepository employeeRepo,
-                                  SearchQueryRepository searchQueryRepo) {
+                                  SearchQueryRecordRepository searchQueryRepo) {
         this.esRepo = esRepo;
         this.employeeRepo = employeeRepo;
         this.searchQueryRepo = searchQueryRepo;
