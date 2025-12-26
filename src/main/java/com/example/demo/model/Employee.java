@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -11,8 +11,12 @@ public class Employee {
     private Long id;
 
     private String fullName;
+
+    @Column(unique = true)
     private String email;
-    private Boolean active;
+
+    private Boolean active = true;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
