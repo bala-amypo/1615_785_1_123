@@ -1,54 +1,30 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 @Entity
-@Data
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String employeeName;
+    private double employeeSalary;
 
-    private String fullName;
-
-    @Column(unique = true)
-    private String email;
-
-    private Boolean active = true;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    public void onCreate() {
-        this.active = true;
-        this.createdAt = LocalDateTime.now();
+    // getters & setters
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
-    // // getters & setters
-    // public Long getId() { return id; }
-    // public void setId(Long id) { this.id = id; }
+    public double getEmployeeSalary() {
+        return employeeSalary;
+    }
 
-    // public String getFullName() { return fullName; }
-    // public void setFullName(String fullName) { this.fullName = fullName; }
-
-    // public String getEmail() { return email; }
-    // public void setEmail(String email) { this.email = email; }
-
-    // public Boolean getActive() { return active; }
-    // public void setActive(Boolean active) { this.active = active; }
-
-    // public LocalDateTime getCreatedAt() { return createdAt; }
-    // public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setEmployeeSalary(double employeeSalary) {
+        this.employeeSalary = employeeSalary;
+    }
 }
