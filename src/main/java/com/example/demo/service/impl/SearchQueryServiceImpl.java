@@ -1,8 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Employee;
 import com.example.demo.model.SearchQuery;
-import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.repository.SearchQueryRepository;
 import com.example.demo.service.SearchQueryService;
@@ -13,32 +11,24 @@ import java.util.List;
 @Service
 public class SearchQueryServiceImpl implements SearchQueryService {
 
-    private final EmployeeSkillRepository esRepo;
-    private final EmployeeRepository employeeRepo;
-    private final SearchQueryRecordRepository searchQueryRepo;
+    private final SearchQueryRepository searchQueryRepository;
+    private final EmployeeSkillRepository employeeSkillRepository;
 
-    public SearchQueryServiceImpl(EmployeeSkillRepository esRepo,
-                                  EmployeeRepository employeeRepo,
-                                  SearchQueryRecordRepository searchQueryRepo) {
-        this.esRepo = esRepo;
-        this.employeeRepo = employeeRepo;
-        this.searchQueryRepo = searchQueryRepo;
+    public SearchQueryServiceImpl(SearchQueryRepository searchQueryRepository,
+                                  EmployeeSkillRepository employeeSkillRepository) {
+        this.searchQueryRepository = searchQueryRepository;
+        this.employeeSkillRepository = employeeSkillRepository;
     }
 
     @Override
-    public List<Employee> searchEmployeesBySkills(List<String> skillNames, Long userId) {
+    public List<Long> searchEmployeesBySkills(List<String> skills) {
 
-        // 1️⃣ Save search query (optional but required by spec)
+        // save search history
         SearchQuery query = new SearchQuery();
-        query.setUserId(userId);
-        query.setSkills(skillNames);
-        searchQueryRepo.save(query);
+        query.setSkills(skills);
+        searchQueryRepository.save(query);
 
-        // 2️⃣ Get matching employee IDs
-        List<Long> employeeIds =
-                esRepo.findEmployeesByAllSkillNames(skillNames, skillNames.size());
-
-        // 3️⃣ Fetch Employee entities
-        return employeeRepo.findAllById(employeeIds);
+        // fetch employee IDs
+        return employeeSkillRepository.findEmployeeIdsBySkillNames(skills, skills.size());
     }
 }
