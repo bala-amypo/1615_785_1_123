@@ -5,33 +5,25 @@ import com.example.demo.model.SearchQueryRecord;
 import com.example.demo.service.SearchQueryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/search")
-@Tag(name = "Search")
 public class SearchQueryController {
 
-    private final SearchQueryService searchQueryService;
+    @Autowired
+    private SearchQueryService service;
 
-    public SearchQueryController(SearchQueryService searchQueryService) {
-        this.searchQueryService = searchQueryService;
+    @PostMapping
+    public List<Employee> search(
+            @RequestBody List<String> skills,
+            @RequestParam long minExperience
+    ) {
+        return service.searchEmployees(skills, minExperience);
     }
 
-    @PostMapping("/employees")
-    public List<Employee> searchEmployees(@RequestBody List<String> skills,
-                                          @RequestParam Long userId) {
-        return searchQueryService.searchEmployeesBySkills(skills, userId);
-    }
-
-    @GetMapping("/{id}")
-    public SearchQueryRecord getQuery(@PathVariable Long id) {
-        return searchQueryService.getQueryById(id);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<SearchQueryRecord> getUserQueries(@PathVariable Long userId) {
-        return searchQueryService.getQueriesForUser(userId);
+    @GetMapping
+    public List<SearchQuery> getAllSearches() {
+        return service.getAllSearches();
     }
 }
