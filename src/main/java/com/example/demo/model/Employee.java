@@ -10,17 +10,30 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String fullName;   // 🔴 REQUIRED
+
     @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
 
-    private String role;   // 🔴 REQUIRED for JWT tests
+    private String role;
+
+    private Boolean active = true;  // 🔴 REQUIRED
 
     // ---------- GETTERS & SETTERS ----------
 
     public Long getId() {
         return id;
+    }
+
+    public String getFullName() {   // ✅ FIX #1
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -35,11 +48,19 @@ public class Employee {
         return password;
     }
 
-    public String getRole() {   // ✅ THIS FIXES THE ERROR
+    public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Boolean getActive() {   // ✅ FIX #2
+        return active;
+    }
+
+    public void setActive(Boolean active) {  // ✅ FIX #3
+        this.active = active;
     }
 }
