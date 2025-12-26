@@ -1,8 +1,12 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeSkill {
 
     @Id
@@ -17,19 +21,6 @@ public class EmployeeSkill {
 
     private String proficiencyLevel;
     private int yearsOfExperience;
+
     private Boolean active = true;
-
-    public Long getId() { return id; }
-    public Employee getEmployee() { return employee; }
-    public Skill getSkill() { return skill; }
-    public String getProficiencyLevel() { return proficiencyLevel; }
-    public int getYearsOfExperience() { return yearsOfExperience; }
-    public Boolean getActive() { return active; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setEmployee(Employee employee) { this.employee = employee; }
-    public void setSkill(Skill skill) { this.skill = skill; }
-    public void setProficiencyLevel(String proficiencyLevel) { this.proficiencyLevel = proficiencyLevel; }
-    public void setYearsOfExperience(int yearsOfExperience) { this.yearsOfExperience = yearsOfExperience; }
-    public void setActive(Boolean active) { this.active = active; }
 }

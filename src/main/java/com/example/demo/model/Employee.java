@@ -2,9 +2,9 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "employees")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,12 +15,23 @@ public class Employee {
     private Long id;
 
     private String fullName;
-
     private String email;
-
     private Double salary;
-
     private String role;
 
     private Boolean active = true;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.active = true;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

@@ -1,9 +1,13 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SearchQueryRecord {
 
     @Id
@@ -12,23 +16,12 @@ public class SearchQueryRecord {
 
     private Long searcherId;
     private String skillsRequested;
-    private Integer resultsCount = 0;
+    private long resultsCount;
     private LocalDateTime searchedAt;
 
     @PrePersist
     public void onCreate() {
         this.searchedAt = LocalDateTime.now();
-        if (resultsCount == null) resultsCount = 0;
+        this.resultsCount = 0;
     }
-
-    public Long getId() { return id; }
-    public Long getSearcherId() { return searcherId; }
-    public String getSkillsRequested() { return skillsRequested; }
-    public Integer getResultsCount() { return resultsCount; }
-    public LocalDateTime getSearchedAt() { return searchedAt; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setSearcherId(Long searcherId) { this.searcherId = searcherId; }
-    public void setSkillsRequested(String skillsRequested) { this.skillsRequested = skillsRequested; }
-    public void setResultsCount(Integer resultsCount) { this.resultsCount = resultsCount; }
 }
