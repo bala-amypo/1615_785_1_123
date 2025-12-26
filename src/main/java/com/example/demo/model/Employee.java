@@ -1,30 +1,29 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Table(name = "employees")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String employeeName;
-    private double employeeSalary;
 
-    // getters & setters
-    public String getEmployeeName() {
-        return employeeName;
-    }
+    private String fullName;
 
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
+    @Column(unique = true, nullable = false)
+    private String email;
 
-    public double getEmployeeSalary() {
-        return employeeSalary;
-    }
+    private String password;
 
-    public void setEmployeeSalary(double employeeSalary) {
-        this.employeeSalary = employeeSalary;
-    }
+    private Double salary;
+
+    private String role;
+
+    private Boolean active = true;
 }
