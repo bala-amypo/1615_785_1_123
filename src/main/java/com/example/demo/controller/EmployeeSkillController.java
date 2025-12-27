@@ -24,8 +24,7 @@ public class EmployeeSkillController {
     }
 
     @PutMapping("/{id}")
-    public EmployeeSkill update(@PathVariable Long id,
-                                @RequestBody EmployeeSkill employeeSkill) {
+    public EmployeeSkill update(@PathVariable Long id,@RequestBody EmployeeSkill employeeSkill) {
         return employeeSkillService.updateEmployeeSkill(id, employeeSkill);
     }
 
